@@ -1,0 +1,46 @@
+.amax { margin: 0 auto; }
+.amax .slides {
+    display: block;
+    position: relative;
+    overflow: hidd en;
+}
+.amax .slides li {
+    position: absolute;
+    top: 0;
+    left: 0;
+    overflow: hidden;
+}
+.amax .slides li img {
+    display: block;
+    width: 100%;
+    max-width: none;
+}
+.amax .slides li.active { display: block; position: relative; }
+.amax .crop li img { width: auto; }
+
+.amax .pager {
+    height: 40px;
+    text-align: center;
+}
+.amax .pager li { display: inline-block; }
+.amax .pager li a,
+.amax .pager li a span {
+    display: block;
+    height: 4px;
+    width: 4px;
+}
+.amax .pager li a {
+    padding: 18px 8px;
+    -webkit-border-radius: 6px;
+    -moz-border-radius: 6px;
+    border-radius: 6px;
+}
+.amax .pager li a span {
+    overflow: hidden;
+    background: #c0c0c0;
+    text-indent: -9999px;
+    -webkit-border-radius: 2px;
+    -moz-border-radius: 2px;
+    border-radius: 2px;
+}
+.amax .pager li.active a span { background: #404040; }
