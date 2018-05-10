@@ -132,7 +132,20 @@
 </div>
 <script>
 callMe = function() {
-        alert('ok');
+        //alert('ok');
+        $.ajax({
+            url: "/api/example",
+            type: "GET",
+            timeout: 30000,
+            dataType: "text", // "xml", "json"
+            success: function(data) {
+                // show text reply as-is (debug)
+                window.alert(data);
+        },
+        error: function(jqXHR, textStatus, ex) {
+            window.console.log(textStatus + "," + ex + ",manjari error:" + jqXHR.responseText);
+        }
+    });
 }
 
 $(document).ready();
