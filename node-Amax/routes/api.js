@@ -4,10 +4,10 @@ var router = express.Router();
 var mysql      = require('mysql');
 var pool      =    mysql.createPool({
     connectionLimit : 1000, //important
-    host     : '54.245.34.77',
-    user     : 'user',
-    password : 'user',
-    database : 'amax',
+    host     : 'localhost',
+    user     : 'root',
+    password : 'root',
+    database : 'manjari',
     debug    :  false
 });
 
@@ -41,7 +41,7 @@ function handle_database(req,res, query) {
 
 /* GET users listing. */
 router.get('/', function(req, res, next) {
-    res.send('respond with a resource manjari');
+    res.send('{"name" : "respond with a resource manjari"}');
 });
 
 router.get('/example', function(req, res, next) {
@@ -54,8 +54,9 @@ router.get('/example', function(req, res, next) {
 
 
 
-router.get('/employees', function(req, res, next) {
-    handle_database(req,res, "select * from Employee");
+router.get('/employee', function(req, res, next) {
+    console.log(req.query.employeeName);
+    handle_database(req,res, "select * from employee where employee_name='" + req.query.employeeName + "'") ;
 });
 
 module.exports = router;

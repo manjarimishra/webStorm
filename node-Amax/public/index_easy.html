@@ -6,146 +6,58 @@
     <title>jQuery UI Selectmenu - Default functionality</title>
     <script src="https://code.jquery.com/jquery-1.12.4.js"></script>
     <link rel="stylesheet" href="//code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
-    <link rel="stylesheet" href="/resources/demos/style.css">
-    <script>
-        $( function() {
-            var availableTags = [
-                "First Name",
-                "Last Name",
-                "Employee ID",
-                "Training Available",
-                "C",
-                "C++",
-                "Clojure",
-                "COBOL",
-                "ColdFusion",
-                "Erlang",
-                "Fortran",
-                "Groovy",
-                "Haskell",
-                "Java",
-                "JavaScript",
-                "Lisp",
-                "Perl",
-                "PHP",
-                "Python",
-                "Ruby",
-                "Scala",
-                "Scheme"
-            ];
-            $( "#tags" ).autocomplete({
-                source: availableTags
-            });
-        } );
-    </script>
 </head>
 
 
-
-
-
-<style>
-        fieldset {
-            border: 0;
-        }
-        label {
-            display: block;
-            margin: 30px 0 0 0;
-        }
-        .overflow {
-            height: 200px;
-        }
-</style>
-    <script src="https://code.jquery.com/jquery-1.12.4.js"></script>
-    <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
-    <script>
-        $( function() {
-            $( "#speed" ).selectmenu();
-
-            $( "#files" ).selectmenu();
-
-            $( "#number" )
-                .selectmenu()
-                .selectmenu( "menuWidget" )
-                .addClass( "overflow" );
-
-            $( "#salutation" ).selectmenu();
-        } );
-    </script>
-</head>
 <body>
-<form onsubmit="callMe()">
-    <div class="ui-widget">
-        <label for="search">Search </label>
-        <input id="search" type="submit">
-    </div>
+<form onsubmit="return callMe()">
+    First name:<br>
+    <input id="formInput" type="text" name="Employee name" value="Enter your name here"><br>
+    <input type="submit" value="Submit">
 </form>
+<div id="tableForFill"\></div>
 
-<div class="demo">
 
-    <form action="#">
-
-        <fieldset>
-            <label for="NAME">Select Your Name </label>
-            <select name="NAME" id="NAME">
-                <option>First Name</option>
-                <option>Last Name</option>
-
-            </select>
-
-            <label for="Training">Training Available</label>
-            <select name="Training" id="Training">
-                <optgroup label="Courses">
-                    <option value="Cohesity">Cohesity</option>
-                    <option value="ESD">ESD</option>
-                    <option value="Forcepoint"> Forcepoint </option>
-                    <option value="Mcafee">Mcafee</option>
-                    <option value="Supermicro">Supermicro</option>
-                    <option value="Attivo">Attivo</option>
-                </optgroup>
-                <optgroup label="Miscellaneous">
-                    <option value="Miscellaneous">For Future  add-Ons courses</option>
-                    <option value="Miscellaneous file">Some other courses with a very long option text</option>
-                </optgroup>
-            </select>
-
-            <label for="Locations">Select your Location</label>
-            <select name="Locations" id="Locations">
-                <option selected="selected">Fremont HQ</option>
-                <option>Ireland</option>
-                <option>China</option>
-            </select>
-
-            <label for="New Employee">Add New Employee Details</label>
-            <select name="New Employee" id="New Employee">
-                <option disabled selected></option>
-                <option>Mr.</option>
-                <option>Mrs.</option>
-                <option>Emp ID</option>
-                <option>Location</option>
-                <option>Miscellaneous</option>
-            </select>
-        </fieldset>
-
-    </form>
-
-</div>
 <script>
 callMe = function() {
-        //alert('ok');
-        $.ajax({
-            url: "/api/example",
+
+        var name = $("#formInput").val();
+        var data_str = "employeeName=" + name;
+        console.log("name is "+ name);
+        $.getJSON({
+            url: "/api/employee",
+            data: data_str,
             type: "GET",
             timeout: 30000,
-            dataType: "text", // "xml", "json"
             success: function(data) {
                 // show text reply as-is (debug)
-                window.alert(data);
+                console.log(JSON.stringify(data));
+
+                $("#tableForFill").append(
+                    ' <table style="width:100%">\n' +
+                    '  <tr>\n' +
+                    '    <th>employee_name</th>\n' +
+                    '    <th>department</th>\n' +
+                    '    <th>id</th>\n' +
+                    '    <th>position</th>\n' +
+                    '  </tr>\n' +
+                    '  <tr>\n' +
+                    '    <td>' + data[0].employee_name +'</td>\n' +
+                    '    <td>1</td>\n' +
+                    '    <td>1</td>\n' +
+                    '    <td>operator</td>\n' +
+                    '  </tr>\n' +
+                    '</table> '
+
+                );
         },
         error: function(jqXHR, textStatus, ex) {
             window.console.log(textStatus + "," + ex + ",manjari error:" + jqXHR.responseText);
         }
+
     });
+
+    return false;
 }
 
 $(document).ready();
