@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>jQuery UI Selectmenu - Default functionality</title>
+    <script src="https://code.jquery.com/jquery-1.12.4.js"></script>
+    <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
+    <link rel="stylesheet" href="//code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
+    <style>
+        table, th, td {
+            border: 4px solid #0000FF;
+        }
+    </style>
+</head>
+
+
+<body>
+
+<div id="tabs">
+    <ul>
+        <li><a href="#tabs-1">Search</a></li>
+        <li><a href="#tabs-2">Add Employee</a></li>
+        <li><a href="#tabs-3">add Training</a></li>
+    </ul>
+    <div id="search">
+        <form onsubmit="return callMe()">
+            Search:<br>
+            <input id="formInput" type="text" name="Search" value="Enter your name here"><br>
+            <input type="submit" value="Submit">
+        </form>
+        <div id="tableForFill"\></div>
+    </div>
+    <div id="add employee">
+    </div>
+    <div id="add training">
+    </div>
+</div>
+
+
+
+<script>
+callMe = function() {
+
+        var name = $("#formInput").val();
+        var data_str = "employeeName=" + name;
+        console.log("name is "+ name);
+        $.getJSON({
+            url: "/api/employee",
+            data: data_str,
+            type: "GET",
+            timeout: 30000,
+            success: function(data) {
+                // show text reply as-is (debug)
+                console.log(JSON.stringify(data));
+
+                $("#tableForFill").html(
+                    ' <table style="width:100%">\n' +
+                    '  <tr>\n' +
+                    '    <th>id</th>\n' +
+                    '    <th>first_name</th>\n' +
+                    '    <th>last-name</th>\n' +
+                    '    <th>employee_id</th>\n' +
+                    '    <th>department</th>\n' +
+                    '    <th>position</th>\n' +
+                    '    <th>training</th>\n' +
+                    '    <th>training finished</th>\n' +
+                    '  </tr>\n' +
+
+
+
+                    '  <tr>\n' +
+                    '    <td>' + data[0].id +'</td>\n' +
+                    '    <td>' + data[0].f_name+'</td>\n' +
+                    '    <td> '+ data[0].l_name + '</td>\n' +
+                    '    <td>'+ data[0].emp_id   + '</td>\n' +
+                    '    <td>'+ data[0].department+  '</td>\n' +
+                    '    <td>'+ data[0].position +  '</td>\n' +
+                    '    <td> '+ data[0].training_name + '</td>\n' +
+                    '    <td> '+ data[0].training_finished + '</td>\n' +
+                    '  </tr>\n' +
+                    '</table> '
+
+                );
+        },
+        error: function(jqXHR, textStatus, ex) {
+            window.console.log(textStatus + "," + ex + ",manjari error:" + jqXHR.responseText);
+        }
+
+    });
+
+    return false;
+}
+
+$( function() {
+    $( "#tabs" ).tabs();
+} );
+</script>
+</body>
+</html>

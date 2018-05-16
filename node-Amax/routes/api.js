@@ -24,6 +24,7 @@ function handle_database(req,res, query) {
         console.log('connected as id ' + connection.threadId);
 
         connection.query(query ,function(err,rows){
+            console.log("inside query execution" + err);
             connection.release();
             if(!err) {
                 res.json(rows);
@@ -31,6 +32,7 @@ function handle_database(req,res, query) {
         });
 
         connection.on('error', function(err) {
+            console.log("inside query error execution");
             res.json({"code" : 100, "status" : "Error in connection database"});
             return;
         });
@@ -56,7 +58,11 @@ router.get('/example', function(req, res, next) {
 
 router.get('/employee', function(req, res, next) {
     console.log(req.query.employeeName);
-    handle_database(req,res, "select * from employee where employee_name='" + req.query.employeeName + "'") ;
+ //   handle_database(req,res, "select * from employee where f_name='" + req.query.employeeName + "'") ;
+    handle_database(req,res, "select * from employee  join  training_finished on employee.emp_id = " +
+        "training_finished.emp_id join training on training_finished.training_id = training.Id " +
+        "where f_name='" + req.query.employeeName + "'") ;
 });
+
 
 module.exports = router;
