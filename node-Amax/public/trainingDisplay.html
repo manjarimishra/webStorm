@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>jQuery UI Selectmenu - Default functionality</title>
+    <script src="https://code.jquery.com/jquery-1.12.4.js"></script>
+    <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
+    <link rel="stylesheet" href="//code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
+    <style>
+        table, th, td {
+            border: 4px solid #0000FF;
+        }
+    </style>
+</head>
+<body>
+<div id="tabs">
+    <ul>
+        <li><a href="#trainingDisplay">  </a></li>
+    </ul>
+        <form onsubmit="return trainingDisplay()">
+            Add Details:<br>
+
+            <input id ="emp_id" type="text" name="emp_id" value="emp_id"><br>
+            <input id ="training_id" type="text" name="training_id" value="training_id"><br>
+            <input id ="s_date" type="text" name="s_date" value="s_date"><br>
+            <input id ="f_date" type="text" name="f_date" value="f_date"><br>
+            <input type ="submit" value="Submit">
+        </form>
+        <div id ="table ForFill"\></div>
+    </div>
+</div>
+
+
+    <script>
+            trainingDisplay = function() {
+            var employeeID = $("#emp_id").val();
+            var trainingID= $("training_id").val();
+            var startDate = $("#s_date").val();
+            var finishDate = $("#f_date").val();
+            var data_str = "employeeID=" + employeeID + "&" + "trainingID=" +  trainingID+ "&" + "s_date =" + startDate + "&"
+                    + "finishDate=" + finishDate;
+            console.log("data_str is "+ data_str);
+
+            $.getJSON({
+                url: "/api/trainingDisplay",
+                data: data_str,
+                type: "GET",
+                timeout: 30000,
+                success: function(data) {
+                    // show text reply as-is (debug)
+                    console.log(JSON.stringify(data));
+                    var display_table = ' <table style="width:100%">\n' +
+
+                        '  <tr>\n' +
+                        '    <th>employeeID</th>\n' +
+                        '    <th>trainingID</th>\n' +
+                        '    <th><startDate <th>\n' +
+                        '    <th><finishDate <th>\n' +
+                        '  </tr>\n' +
+
+
+                    console.log("data_str is "+ data_str);
+                    generate_rows(data) +
+                        '</table> ' ;
+                    $("#tableForFill").html(display_table);
+
+                },
+                error: function(jqXHR, textStatus, ex) {
+                    window.console.log(textStatus + "," + ex + ",manjari error:" + jqXHR.responseText);
+                }
+
+            });
+            return false;
+        }
+
+        function generate_rows(data) {
+            var res = "";
+            var i = 0;
+
+            for (i = 0 ; i < data.length; i ++) {
+                res = res + '  <tr>\n' +
+                    '    <td>' + data[i].emp_id+ '</td>\n' +
+                    '    <td> ' + data[i].training_id + '</td>\n' +
+                    '    <td>' + data[i].s_date+ '</td>\n' +
+                    '    <td>' + data[i].f_date+ '</td>\n' +
+                    '  </tr>\n'
+            }
+            console.log("generate_rows gave us:" + res)
+            return res;
+        }
+
+        $( function() {
+            $( "#tabs" ).tabs();
+        } );
+
+
+    </script>
+</div>
+</body>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

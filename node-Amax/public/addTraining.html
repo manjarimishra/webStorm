@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html lang="en"></html>
+
+<head>
+
+<meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>jQuery UI Selectmenu - Default functionality</title>
+    <script src="https://code.jquery.com/jquery-1.12.4.js"></script>
+    <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
+    <link rel="stylesheet" href="//code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
+    <style>
+        table, th, td {
+            border: 4px solid #0000FF;
+        }
+    </style>
+</head>
+<div id="tabs">
+    <ul>
+        <li><a href="#addTraining"> New Training </a></li>
+    </ul>
+
+    <div id="addTraining">
+        <form onsubmit="return addTraining()">
+             Details:<br>
+            <input id="Id" value="ID"><br>
+            <input id="training_name" type="text" name="Training Name" value=" Training Name"><br>
+            <input id="trainer" type="text" name="Trainer" value="Trainer"><br>
+            <input id="course_descriptions" type="text" name="course descriptions" value="course descriptions"><br>
+            <input type="submit" value="Submit">
+        </form>
+        <div id="table ForFill"\></div>
+    </div>
+</div>
+
+<script>
+       addTraining = function()
+       {
+           var trainingName = $("#training_name").val();
+           var trainer= $("#trainer").val();
+           var courseDescriptions = $("#course_descriptions").val();
+           var data_str = "trainingName=" + trainingName  + "&" + "Trainer=" + trainer + "&" + "courseDescriptions="
+               + courseDescriptions;
+           console.log("data_str is "+ data_str);
+           $.getJSON({
+               url: "/api/addTraining",
+               data: data_str,
+               type: "GET",
+               timeout: 30000,
+               success: function (data) {
+                   // show text reply as-is (debug)
+                   console.log(JSON.stringify(data));
+                   var display_table = ' <table style="width:100%">\n' +
+                       '  <tr>\n' +
+                       '    <th>id</th>\n' +
+                       '    <th>training_name</th>\n' +
+                       '    <th>trainer</th>\n' +
+                       '    <th>course_descriptions</th>\n' +
+                       '  </tr>\n' +
+                       generate_rows(data) +
+                       '</table> ';
+                   $("#tableForFill").html(display_table);
+
+               },
+               error: function (jqXHR, textStatus, ex) {
+                   window.alert(textStatus + "," + ex + " error:" + jqXHR.responseText);
+               }
+
+           });
+           return false;
+       }
+
+
+    function generate_rows(data) {
+        var res = "";
+        var i = 0;
+
+        for (i = 0 ; i < data.length; i ++) {
+            res = res + '  <tr>\n' +
+                '    <td>' + data[i].id + '</td>\n' +
+                '    <td>' + data[i].training_name + '</td>\n' +
+                '    <td> ' + data[i].trainer + '</td>\n' +
+                '    <td>' + data[i].course_descriptions+ '</td>\n' +
+                '  </tr>\n'
+        }
+        console.log("generate_rows gave us:" + res)
+        return res;
+    }
+
+    $( function() {
+        $( "#tabs" ).tabs();
+    } );
+
+
+</script>
+</div>
+</body>

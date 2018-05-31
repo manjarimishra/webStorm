@@ -27,7 +27,11 @@ function handle_database(req,res, query) {
             console.log("inside query execution" + err);
             connection.release();
             if(!err) {
+                console.log("inside query execution rows " + JSON.stringify(rows));
                 res.json(rows);
+            } else {
+                console.log("inside query error execution");
+                res.sendStatus(400);
             }
         });
 
@@ -55,7 +59,6 @@ router.get('/example', function(req, res, next) {
 });
 
 
-
 router.get('/employee', function(req, res, next) {
     console.log(req.query.employeeName);
  //   handle_database(req,res, "select * from employee where f_name='" + req.query.employeeName + "'") ;
@@ -64,5 +67,47 @@ router.get('/employee', function(req, res, next) {
         "where f_name='" + req.query.employeeName + "'") ;
 });
 
+
+router.get('/join_Employee', function(req, res, next) {
+    console.log(req.query.addEmployee);
+    handle_database(req,res, "select * from employee  join  training_finished on employee.emp_id = " +
+        "training_finished.emp_id join training on training_finished.training_id = training.Id " +
+        "where f_name='" + req.query.employeeName + "'") ;
+});
+
+
+// for adding new employee information
+router.get('/addEmployee', function(req, res, next) {
+
+    var insert_str = "insert into employee  (department,f_name,l_name,emp_id,position)" +
+        " values (\"" + req.query.department + "\",\"" + req.query.firstName +  "\",\"" + req.query.lastName + "\",\""
+        + req.query.employeeId + "\",\"" + req.query.position + "\")";
+    console.log("insert_str= " + insert_str);
+    handle_database(req,res, insert_str );
+})
+
+router.get('/addTraining', function(req, res, next) {
+
+    var insert_str = "insert into training (training_name,trainer,course_descriptions)" +
+        " values (\"" + req.query.trainingName + "\",\"" + req.query.Trainer +  "\",\"" + req.query.courseDescriptions + "\")";
+    console.log("insert_str= " + insert_str);
+    handle_database(req,res, insert_str );
+})
+
+router.get('/trainingFinished', function(req, res, next) {
+
+    var insert_str = "insert into training_finished (emp_id,training_id,s_date,f_date)" +
+        " values (\"" + req.query.employeeId+  "\",\" "+ req.query.trainingId +  "\",\"" + req.query.startDate+ "\",\""+ req.query.finishedDate + "\")";
+    console.log("insert_str= " + insert_str);
+    handle_database(req,res, insert_str );
+})
+
+router.get('/trainingDisplay', function(req, res, next) {
+
+    var insert_str = "insert into training_finished (emp_id,training_id,s_date,f_date)" +
+        " values (\"" + req.query.employeeID +  "\",\" "+ req.query.trainingID+  "\",\"" + req.query.startDate+ "\",\""+ req.query.finishDate + "\")";
+    console.log("insert_str= " + insert_str);
+    handle_database(req,res, insert_str );
+})
 
 module.exports = router;

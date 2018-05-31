@@ -13,35 +13,24 @@
         }
     </style>
 </head>
-
-
 <body>
-
 <div id="tabs">
     <ul>
-        <li><a href="#tabs-1">Search</a></li>
-        <li><a href="#tabs-2">Add Employee</a></li>
-        <li><a href="#tabs-3">add Training</a></li>
+        <li><a href="#search">Search</a></li>
     </ul>
+
     <div id="search">
-        <form onsubmit="return callMe()">
+        <form onsubmit="return employeeSearch()">
             Search:<br>
             <input id="formInput" type="text" name="Search" value="Enter your name here"><br>
             <input type="submit" value="Submit">
         </form>
         <div id="tableForFill"\></div>
-    </div>
-    <div id="add employee">
-    </div>
-    <div id="add training">
-    </div>
+
 </div>
 
-
-
 <script>
-callMe = function() {
-
+ employeeSearch = function() {
         var name = $("#formInput").val();
         var data_str = "employeeName=" + name;
         console.log("name is "+ name);
@@ -53,9 +42,7 @@ callMe = function() {
             success: function(data) {
                 // show text reply as-is (debug)
                 console.log(JSON.stringify(data));
-
-                $("#tableForFill").html(
-                    ' <table style="width:100%">\n' +
+                var display_table = ' <table style="width:100%">\n' +
                     '  <tr>\n' +
                     '    <th>id</th>\n' +
                     '    <th>first_name</th>\n' +
@@ -66,35 +53,64 @@ callMe = function() {
                     '    <th>training</th>\n' +
                     '    <th>training finished</th>\n' +
                     '  </tr>\n' +
+                    generate_rows(data) +
+                    '</table> ' ;
+                $("#tableForFill").html(display_table);
 
-
-
-                    '  <tr>\n' +
-                    '    <td>' + data[0].id +'</td>\n' +
-                    '    <td>' + data[0].f_name+'</td>\n' +
-                    '    <td> '+ data[0].l_name + '</td>\n' +
-                    '    <td>'+ data[0].emp_id   + '</td>\n' +
-                    '    <td>'+ data[0].department+  '</td>\n' +
-                    '    <td>'+ data[0].position +  '</td>\n' +
-                    '    <td> '+ data[0].training_name + '</td>\n' +
-                    '    <td> '+ data[0].training_finished + '</td>\n' +
-                    '  </tr>\n' +
-                    '</table> '
-
-                );
         },
         error: function(jqXHR, textStatus, ex) {
             window.console.log(textStatus + "," + ex + ",manjari error:" + jqXHR.responseText);
         }
 
     });
-
     return false;
+}
+
+function generate_rows(data) {
+    var res = "";
+    var i = 0;
+
+    for (i = 0 ; i < data.length; i ++) {
+        res = res + '  <tr>\n' +
+        '    <td>' + data[i].id + '</td>\n' +
+        '    <td>' + data[i].f_name + '</td>\n' +
+        '    <td> ' + data[i].l_name + '</td>\n' +
+        '    <td>' + data[i].emp_id + '</td>\n' +
+        '    <td>' + data[i].department + '</td>\n' +
+        '    <td>' + data[i].position + '</td>\n' +
+        '    <td> ' + data[i].training_name + '</td>\n' +
+        '    <td> ' + data[i].training_finished + '</td>\n' +
+        '  </tr>\n'
+    }
+    console.log("generate_rows gave us:" + res)
+    return res;
 }
 
 $( function() {
     $( "#tabs" ).tabs();
 } );
+
+
 </script>
+</div>
 </body>
-</html>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
