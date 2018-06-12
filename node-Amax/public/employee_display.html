@@ -19,18 +19,31 @@
         <li><a href="#search">Search</a></li>
     </ul>
 
-    <div id="search">
-        <form onsubmit="return employeeSearch()">
+       <div id="search">
+           <form onsubmit="return employeeSearchByFirstName()">
             Search:<br>
-            <input id="formInput" type="text" name="Search" value="Enter your name here"><br>
-            <input type="submit" value="Submit">
-        </form>
-        <div id="tableForFill"\></div>
+            <input id="formInput" type="text" name="Search" value="Enter Employee name "><br>
+            <input type="submit" value="Submit" ><br>
+            <br><br>
+
+           </form>
+           <form onsubmit="return employeeSearchByFirstName()">
+               Search:<br>
+               <input id="form Input" type="text" name="Search" value="Enter Employee ID"><br>
+               <input type="submit" value="Submit"><br>
+               <br><br>
+           </form>
+           <form onsubmit="return employeeSearchByFirstName()">
+               Search:<br>
+               <input id="Input" type="text" name="Search" value="Enter Training"><br>
+               <input type="submit" value="Submit" ><br>
+           </form>
+           <div id="tableForFill"\></div>
 
 </div>
 
 <script>
- employeeSearch = function() {
+ employeeSearchByFirstName = function() {
         var name = $("#formInput").val();
         var data_str = "employeeName=" + name;
         console.log("name is "+ name);
