@@ -69,10 +69,16 @@ router.get('/employee', function(req, res, next) {
 
 router.get('/employeeId', function(req, res, next) {
     console.log("employeeId = " + req.query.employeeId);
-    //   handle_database(req,res, "select * from employee where id='" + req.query.emp_id + "'") ;
     handle_database(req,res, "select * from employee  join  training_finished on employee.emp_id = " +
         "training_finished.emp_id join training on training_finished.training_id = training.Id " +
         "where employee.emp_id='" + req.query.employeeId + "'") ;
+});
+
+router.get('/employeeByTraining', function(req, res, next) {
+    console.log("trainingName = " + req.query.trainingName);
+    handle_database(req,res, "select * from employee  join  training_finished on employee.emp_id = " +
+        "training_finished.emp_id join training on training_finished.training_id = training.Id " +
+        "where training_name='" + req.query.trainingName + "'") ;
 });
 
 
