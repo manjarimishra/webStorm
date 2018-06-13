@@ -20,22 +20,22 @@
     </ul>
 
        <div id="search">
-           <form onsubmit="return employeeSearchByFirstName()">
+           <form onsubmit="return employeeSearchByFirstNameFn()">
             Search:<br>
-            <input id="formInput" type="text" name="Search" value="Enter Employee name "><br>
+            <input id="employeeSearchByFirstName" type="text" name="Search" value="Enter Employee name "><br>
             <input type="submit" value="Submit" ><br>
             <br><br>
 
            </form>
-           <form onsubmit="return employeeSearchByFirstName()">
+           <form onsubmit="return employeeSearchByIdFn()">
                Search:<br>
-               <input id="form Input" type="text" name="Search" value="Enter Employee ID"><br>
+               <input id="employeeSearchById" type="text" name="Search" value="Enter Employee ID"><br>
                <input type="submit" value="Submit"><br>
                <br><br>
            </form>
-           <form onsubmit="return employeeSearchByFirstName()">
+           <form onsubmit="return employeeSearchByTrainingNameFn()">
                Search:<br>
-               <input id="Input" type="text" name="Search" value="Enter Training"><br>
+               <input id="employeeSearchByTrainingName" type="text" name="Search" value="Enter Training"><br>
                <input type="submit" value="Submit" ><br>
            </form>
            <div id="tableForFill"\></div>
@@ -43,8 +43,8 @@
 </div>
 
 <script>
- employeeSearchByFirstName = function() {
-        var name = $("#formInput").val();
+ employeeSearchByFirstNameFn = function() {
+        var name = $("#employeeSearchByFirstName").val();
         var data_str = "employeeName=" + name;
         console.log("name is "+ name);
         $.getJSON({
@@ -78,6 +78,79 @@
     });
     return false;
 }
+
+ employeeSearchByIdFn = function() {
+     var id = $("#employeeSearchById").val();
+     var data_str = "employeeId=" + id;
+     console.log("id is "+ id);
+     $.getJSON({
+         url: "/api/employeeId",
+         data: data_str,
+         type: "GET",
+         timeout: 30000,
+         success: function(data) {
+             // show text reply as-is (debug)
+             console.log(JSON.stringify(data));
+             var display_table = ' <table style="width:100%">\n' +
+                 '  <tr>\n' +
+                 '    <th>id</th>\n' +
+                 '    <th>first_name</th>\n' +
+                 '    <th>last-name</th>\n' +
+                 '    <th>employee_id</th>\n' +
+                 '    <th>department</th>\n' +
+                 '    <th>position</th>\n' +
+                 '    <th>training</th>\n' +
+                 '    <th>training finished</th>\n' +
+                 '  </tr>\n' +
+                 generate_rows(data) +
+                 '</table> ' ;
+             $("#tableForFill").html(display_table);
+
+         },
+         error: function(jqXHR, textStatus, ex) {
+             window.console.log(textStatus + "," + ex + ",manjari error:" + jqXHR.responseText);
+         }
+
+     });
+     return false;
+ }
+
+
+ employeeSearchByTrainingNameFn = function() {
+     var trainingName = $("#employeeSearchByTrainingName").val();
+     var data_str = "trainingName=" + trainingName;
+     console.log("trainingName is "+ trainingName);
+     $.getJSON({
+         url: "/api/employeeByTraining",
+         data: data_str,
+         type: "GET",
+         timeout: 30000,
+         success: function(data) {
+             // show text reply as-is (debug)
+             console.log(JSON.stringify(data));
+             var display_table = ' <table style="width:100%">\n' +
+                 '  <tr>\n' +
+                 '    <th>id</th>\n' +
+                 '    <th>first_name</th>\n' +
+                 '    <th>last-name</th>\n' +
+                 '    <th>employee_id</th>\n' +
+                 '    <th>department</th>\n' +
+                 '    <th>position</th>\n' +
+                 '    <th>training</th>\n' +
+                 '    <th>training finished</th>\n' +
+                 '  </tr>\n' +
+                 generate_rows(data) +
+                 '</table> ' ;
+             $("#tableForFill").html(display_table);
+
+         },
+         error: function(jqXHR, textStatus, ex) {
+             window.console.log(textStatus + "," + ex + ",manjari error:" + jqXHR.responseText);
+         }
+
+     });
+     return false;
+ }
 
 function generate_rows(data) {
     var res = "";
