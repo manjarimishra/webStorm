@@ -62,15 +62,15 @@ router.get('/example', function(req, res, next) {
 router.get('/employee', function(req, res, next) {
     console.log(req.query.employeeName);
  //   handle_database(req,res, "select * from employee where f_name='" + req.query.employeeName + "'") ;
-    handle_database(req,res, "select * from employee  join  training_finished on employee.emp_id = " +
-        "training_finished.emp_id join training on training_finished.training_id = training.Id " +
+    handle_database(req,res, "select * from employee   left outer join  training_finished on employee.emp_id = " +
+        "training_finished.emp_id  left outer join training on training_finished.training_id = training.Id " +
         "where f_name='" + req.query.employeeName + "'") ;
 });
 
 router.get('/employeeId', function(req, res, next) {
     console.log("employeeId = " + req.query.employeeId);
-    handle_database(req,res, "select * from employee  join  training_finished on employee.emp_id = " +
-        "training_finished.emp_id join training on training_finished.training_id = training.Id " +
+    handle_database(req,res, "select * from employee  left outer join  training_finished on employee.emp_id = " +
+        "training_finished.emp_id  left outer join training on training_finished.training_id = training.Id " +
         "where employee.emp_id='" + req.query.employeeId + "'") ;
 });
 
