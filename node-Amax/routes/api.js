@@ -111,7 +111,9 @@ router.get('/addTraining', function(req, res, next) {
 router.get('/trainingFinished', function(req, res, next) {
 
     var insert_str = "insert into training_finished (emp_id,training_id,s_date,f_date)" +
-        " values (\"" + req.query.employeeId+  "\",\" "+ req.query.trainingId +  "\",\"" + req.query.startDate+ "\",\""+ req.query.finishedDate + "\")";
+        " values (\"" + req.query.employeeId+  "\",\" "+ req.query.trainingId +  "\",\"" + req.query.startDate+ "\",\""+ req.query.finishedDate + "\")"
+        + " ON DUPLICATE KEY UPDATE f_date = \"" +  req.query.finishedDate + "\"";
+    ;
     console.log("insert_str= " + insert_str);
     handle_database(req,res, insert_str );
 })
